@@ -1,0 +1,87 @@
+<div class="sidebar bg-light border-end vh-100 position-sticky top-0" id="sidebar">
+    <div class="p-3">
+        <!-- Collapse/Expand Button -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="mb-0">Settings</h4>
+            <button class="btn btn-sm btn-outline-secondary" id="sidebar-toggle" onclick="toggleSidebar()" title="Collapse sidebar">
+                <i class="bi bi-chevron-left" id="sidebar-toggle-icon"></i>
+            </button>
+        </div>
+
+        <!-- Sidebar Content -->
+        <div id="sidebar-content">
+
+            <!-- Proposed Investment -->
+            <div class="mb-4">
+                <label for="proposedInvestment" class="form-label">
+                    <strong>Proposed Investment ({{ portfolio_currency }})</strong>
+                </label>
+                <form method="post" id="investment-form">
+                    {% csrf_token %}
+                    <select class="form-select" id="proposedInvestment" name="proposed_investment"
+                            onchange="document.getElementById('investment-form').submit()">
+                        {% for amount in investment_options %}
+                        <option value="{{ amount }}" {% if amount == proposed_investment %}selected{% endif %}>
+                            {{ portfolio_currency_symbol }}{{ amount|floatformat:0 }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+
+            <!-- Update Button -->
+            <div class="mb-4">
+                <button class="btn btn-primary w-100" id="update-btn" onclick="updateData()">
+                    <i class="bi bi-arrow-clockwise"></i> Update Data
+                </button>
+            </div>
+
+            <!-- Ticker Selection -->
+            <div class="ticker-selection">
+                <h5 class="mb-3">Top Gainers</h5>
+                <p class="small text-muted mb-2">Select a ticker to view details:</p>
+
+                <div class="mb-3">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text"
+                               class="form-control"
+                               id="ticker-search"
+                               placeholder="Search tickers..."
+                               autocomplete="off"
+                               onkeyup="filterTickers()">
+                        <button class="btn btn-outline-secondary"
+                                type="button"
+                                id="clear-search"
+                                onclick="clearTickerSearch()"
+                                style="display: none;">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                    <small class="text-muted" id="ticker-count">{{ top_n|length }} tickers</small>
+                </div>
+
+                <div class="list-group" id="ticker-list">
+                    {% for ticker in top_n %}
+                    <a href="#"
+                       class="list-group-item list-group-item-action ticker-item {% if ticker.ticker == selected_ticker %}active{% endif %}"
+                       data-ticker="{{ ticker.ticker }}"
+                       hx-get="{% url 'trading_app:ticker_detail' ticker.ticker %}"
+                       hx-target="#ticker-details-container"
+                       hx-swap="innerHTML"
+                       onclick="selectTicker('{{ ticker.ticker }}', event)">
+                        <div class="d-flex w-100 justify-content-between">
+                            <strong>{{ ticker.ticker }}</strong>
+                            <small class="{% if ticker.gain_per_share > 0 %}text-success{% else %}text-danger{% endif %}">
+                                ${{ ticker.gain_per_share|floatformat:2 }}
+                            </small>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

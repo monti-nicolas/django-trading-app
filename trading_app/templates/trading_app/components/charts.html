@@ -1,0 +1,81 @@
+{% load dashboard_extras %}
+
+<div class="charts-section">
+    <!-- Company Info -->
+    <div class="mb-4">
+        <h2 class="mb-1">{{ selected_ticker }}</h2>
+        <h4 class="text-muted">{{ company_name }}</h4>
+    </div>
+
+    <!-- Price Forecast Chart -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Price Forecast</h5>
+        </div>
+        <div class="card-body">
+            <div id="price-forecast-chart"></div>
+        </div>
+        <div class="card-footer">
+            <p class="mb-0 small">
+                <strong>90% Confidence Interval:</strong> The shaded area represents the range where we expect the actual price to fall 90% of the time.
+                Wider bands indicate higher uncertainty in the forecast.
+            </p>
+        </div>
+    </div>
+
+    <!-- Moving Averages Chart -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Moving Averages</h5>
+        </div>
+        <div class="card-body">
+            <div id="moving-averages-chart"></div>
+        </div>
+        <div class="card-footer">
+            <p class="mb-1"><strong>Golden Cross:</strong> 50-day MA crosses above 200-day MA → Bullish signal. Often seen as start of a major uptrend.</p>
+            <p class="mb-1"><strong>Death Cross:</strong> 50-day MA crosses below 200-day MA → Bearish signal. Possible start of a downtrend.</p>
+            <p class="mb-0"><strong>Support/Resistance:</strong> Price bounces off either MA → The MAs act as dynamic support/resistance levels. Bounce = strength; break = potential reversal.</p>
+        </div>
+    </div>
+
+    <!-- News Sentiment -->
+    {% comment %}
+    <div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">📰 News Sentiment</h5>
+    </div>
+    <div class="card-body">
+        {% if sentiment_data %}
+            <p><strong>Average Sentiment Score:</strong> {{ sentiment_data.avg_sentiment|floatformat:2 }}</p>
+
+            {% if sentiment_data.sentiment_counts %}
+                <h6 class="mt-3"><strong>Sentiment Breakdown:</strong></h6>
+                <ul class="list-unstyled">
+                    {% for label, count in sentiment_data.sentiment_counts.items %}
+                    <li>{{ label|title }}: {{ count }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <h6 class="mt-3"><strong>Top Headlines & Sentiment:</strong></h6>
+            {% if sentiment_data.headlines_with_scores %}
+                <ul>
+                    {% for headline, label, score in sentiment_data.headlines_with_scores %}
+                    <li>{{ headline }}
+                        <span class="badge bg-{% if label == 'positive' %}success{% elif label == 'negative' %}danger{% else %}secondary{% endif %}">
+                            {{ label }}: {{ score|floatformat:2 }}
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No headlines available.</p>
+            {% endif %}
+        {% else %}
+            <p class="text-muted">No sentiment data available.</p>
+        {% endif %}
+    </div>
+    </div>
+    {% endcomment %}
+
+</div>

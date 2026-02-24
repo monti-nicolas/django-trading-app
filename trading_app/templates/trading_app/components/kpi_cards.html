@@ -1,0 +1,82 @@
+{% load humanize %}
+
+<div class="row mb-4" id="kpi-cards">
+    <div class="col-12">
+        <h4 class="mb-3">📊 Ticker KPIs</h4>
+    </div>
+
+    <div class="col-md-6 col-lg-2 mb-3">
+        <div class="card kpi-card">
+            <div class="card-body text-center">
+                <h6 class="card-subtitle mb-2 text-muted small">Average N Days Forecast</h6>
+                <h3 class="card-title mb-0">${{ avg_forecast|floatformat:2|intcomma }}</h3>
+            </div>
+        </div>
+    </div>
+
+    {% comment %}
+    <div class="col-md-6 col-lg-2 mb-3">
+        <div class="card kpi-card">
+            <div class="card-body text-center">
+                <h6 class="card-subtitle mb-2 text-muted small">MSE</h6>
+                <h3 class="card-title mb-0">{{ mse|floatformat:0|intcomma }}</h3>
+            </div>
+        </div>
+    </div>
+    {% endcomment %}
+
+    <div class="col-md-6 col-lg-2 mb-3">
+        <div class="card kpi-card">
+            <div class="card-body text-center">
+                <h6 class="card-subtitle mb-2 text-muted small">MAPE (%)</h6>
+                <h3 class="card-title mb-0 {% if mape <= 10 %}text-success{% elif mape <= 20 %}text-warning{% else %}text-danger{% endif %}">
+                    {{ mape|floatformat:1 }}%
+                </h3>
+                <small class="text-muted" style="font-size: 0.7rem;">
+                    {% if mape <= 10 %}Excellent{% elif mape <= 20 %}Good{% else %}Fair{% endif %}
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-2 mb-3">
+        <div class="card kpi-card">
+            <div class="card-body text-center">
+                <h6 class="card-subtitle mb-2 text-muted small">Current Price ({{ portfolio_currency }})</h6>
+                <h3 class="card-title mb-0">{{ portfolio_currency_symbol }}{{ current_price|floatformat:2|intcomma }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-2 mb-3">
+        <div class="card kpi-card">
+            <div class="card-body text-center">
+                <h6 class="card-subtitle mb-2 text-muted small">Gain Per Share ({{ portfolio_currency }})</h6>
+                <h3 class="card-title mb-0 {% if gain_per_share > 0 %}text-success{% else %}text-danger{% endif %}">
+                    {{ portfolio_currency_symbol }}{{ gain_per_share|floatformat:2|intcomma }}
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-2 mb-3">
+        <div class="card kpi-card">
+            <div class="card-body text-center">
+                <h6 class="card-subtitle mb-2 text-muted small">Number Of Shares To Purchase</h6>
+                <h3 class="card-title mb-0">{{ num_shares|floatformat:0 }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-2 mb-3">
+        <div class="card kpi-card">
+            <div class="card-body text-center">
+                <h6 class="card-subtitle mb-2 text-muted small">Estimated Total Gain ({{ portfolio_currency }}) After Fees</h6>
+                <h3 class="card-title mb-0 {% if estimated_total_gain > 0 %}text-success{% else %}text-danger{% endif %}">
+                    {{ portfolio_currency_symbol }}{{ estimated_total_gain|floatformat:0|intcomma }}
+                </h3>
+            </div>
+        </div>
+    </div>
+
+</div>

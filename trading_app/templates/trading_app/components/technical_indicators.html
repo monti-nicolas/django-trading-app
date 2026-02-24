@@ -1,0 +1,173 @@
+<div class="technical-indicators-section">
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">📊 Technical Indicators</h5>
+        </div>
+    </div>
+
+    <!-- RSI -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h6 class="mb-0">RSI</h6>
+        </div>
+        <div class="card-body">
+            <p class="small mb-2">Momentum indicator measuring the speed and change of price movements.</p>
+            <p class="small mb-2"><strong>Range:</strong> 0–100</p>
+            <p class="small mb-2"><strong>Common Interpretation:</strong></p>
+            <ul class="small">
+                <li>Higher than 70 → Stock is overbought → Potential sell signal</li>
+                <li>Lower than 30 → Stock is oversold → Potential BUY signal</li>
+            </ul>
+            <p class="small"><strong>30-Day Average RSI:</strong> {{ technical_averages.rsi|floatformat:0 }}</p>
+            <div id="rsi-chart"></div>
+        </div>
+    </div>
+
+    <!-- MACD -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h6 class="mb-0">MACD – Moving Average Convergence Divergence</h6>
+        </div>
+        <div class="card-body">
+            <p class="small mb-2">The difference between two EMAs (typically 12-day and 26-day), plus a signal line (9-day EMA of the MACD).</p>
+            <p class="small mb-2"><strong>Common Interpretation:</strong></p>
+            <ul class="small">
+                <li>MACD CROSSES above Signal → BUY</li>
+                <li>MACD crosses below Signal → Sell</li>
+            </ul>
+            <p class="small"><strong>30-Day Average MACD:</strong> {{ technical_averages.macd|floatformat:0 }}</p>
+            <div id="macd-chart"></div>
+        </div>
+    </div>
+
+    <!-- Bollinger Bands -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h6 class="mb-0">Bollinger Bands (20-day, ±2 std dev)</h6>
+        </div>
+        <div class="card-body">
+            <p class="small mb-2">Volatility indicator showing upper and lower price bands around a 20-day SMA.</p>
+            <p class="small mb-2"><strong>Common Interpretation:</strong></p>
+            <ul class="small">
+                <li>Price touches or exceeds upper band → Potential overbought → Sell</li>
+                <li>Price touches or drops below lower band → Potential oversold → BUY</li>
+            </ul>
+            <div id="bollinger-chart"></div>
+        </div>
+    </div>
+
+    <!-- ATR -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h6 class="mb-0">ATR</h6>
+        </div>
+        <div class="card-body">
+            <p class="small mb-2">Market volatility.</p>
+            <p class="small mb-2"><strong>Common Interpretation:</strong></p>
+            <ul class="small">
+                <li>Higher ATR → Stock is more volatile</li>
+                <li>Lower ATR → Stock is less volatile</li>
+                <li>Not a direct buy/sell signal, but helps with setting stop losses or assessing risk levels</li>
+            </ul>
+            <p class="small"><strong>30-Day Average ATR:</strong> {{ technical_averages.atr|floatformat:0 }}</p>
+            <div id="atr-chart"></div>
+        </div>
+    </div>
+
+    <!-- OBV -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h6 class="mb-0">OBV: On-Balance Volume</h6>
+        </div>
+        <div class="card-body">
+            <p class="small mb-2">Accumulative indicator based on volume. Adds volume on up days and subtracts on down days.</p>
+            <p class="small mb-2"><strong>Common Interpretation:</strong></p>
+            <ul class="small">
+                <li>Rising OBV → Volume is backing upward trend → BULLISH</li>
+                <li>Falling OBV → Volume backing downward trend → Bearish</li>
+            </ul>
+            <div id="obv-chart"></div>
+        </div>
+    </div>
+
+    <!-- Stochastic Oscillator -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h6 class="mb-0">Stochastic Oscillator</h6>
+        </div>
+        <div class="card-body">
+            <p class="small mb-2">Momentum indicator comparing a stock's closing price to its price range over a specific time period (usually 14 days).</p>
+            <p class="small mb-2"><strong>Range:</strong> 0-100</p>
+            <p class="small mb-2"><strong>Common Interpretation:</strong></p>
+            <ul class="small">
+                <li>Higher than 80 → Overbought → Potential sell</li>
+                <li>Lower than 20 → Oversold → Potential BUY</li>
+                <li>Crossovers of K and D lines are buy/sell signals</li>
+            </ul>
+            <p class="small"><strong>30-Day Average STOCH-K:</strong> {{ technical_averages.stoch_k|floatformat:0 }}</p>
+            <div id="stochastic-chart"></div>
+        </div>
+    </div>
+
+    <!-- Ichimoku Cloud -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h6 class="mb-0">Ichimoku Cloud</h6>
+        </div>
+        <div class="card-body">
+            <p class="small mb-2">A multi-faceted indicator that shows trend, momentum, and support/resistance levels.</p>
+            <p class="small mb-2"><strong>Components:</strong></p>
+            <ul class="small">
+                <li>Tenkan-sen (Conversion line)</li>
+                <li>Kijun-sen (Base line)</li>
+                <li>Senkou Span A/B (Cloud boundaries)</li>
+                <li>Chikou Span (Lagging line)</li>
+            </ul>
+            <p class="small mb-2"><strong>Common Interpretation:</strong></p>
+            <ul class="small">
+                <li>Price above the cloud → BULLISH</li>
+                <li>Price below the cloud → Bearish</li>
+                <li>Price inside the cloud → Consolidation</li>
+            </ul>
+            <div id="ichimoku-chart"></div>
+        </div>
+    </div>
+
+    <!-- ADX -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h6 class="mb-0">ADX – Average Directional Index</h6>
+        </div>
+        <div class="card-body">
+            <p class="small mb-2">Strength of a trend (not the direction).</p>
+            <p class="small mb-2"><strong>Range:</strong> 0-100</p>
+            <p class="small mb-2"><strong>Common Interpretation:</strong></p>
+            <ul class="small">
+                <li>Less than 20 → Weak or no trend</li>
+                <li>20–40 → Trending</li>
+                <li>More than 40 → Strong trend</li>
+                <li>Helps determine whether to use trend-following or mean-reversion strategies</li>
+            </ul>
+            <p class="small"><strong>30-Day Average ADX:</strong> {{ technical_averages.adx|floatformat:0 }}</p>
+            <div id="adx-chart"></div>
+        </div>
+    </div>
+
+    <!-- VWAP -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h6 class="mb-0">VWAP – Volume Weighted Average Price</h6>
+        </div>
+        <div class="card-body">
+            <p class="small mb-2">The average price a stock has traded at throughout the day, based on both volume and price.</p>
+            <p class="small mb-2"><strong>Common Interpretation:</strong></p>
+            <ul class="small">
+                <li>Price above VWAP → BULLISH bias</li>
+                <li>Price below VWAP → Bearish bias</li>
+                <li>Popular among institutional traders; used to assess fair value during the trading day</li>
+            </ul>
+            <p class="small"><strong>30-Day Average VWAP:</strong> {{ technical_averages.vwap|floatformat:0 }}</p>
+            <div id="vwap-chart"></div>
+        </div>
+    </div>
+</div>

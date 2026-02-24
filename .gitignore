@@ -1,0 +1,10 @@
+source/etf/*.csv
+source/stock/*.csv
+source/au/etf/*.csv
+source/au/stock/*.csv
+source/us/etf/*.csv
+source/us/stock/*.csv
+.DS_Store
+.idea/
+source/stock/*.xlsx
+secrets/

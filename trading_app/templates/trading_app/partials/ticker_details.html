@@ -1,0 +1,26 @@
+<!-- KPI Cards -->
+{% include 'trading_app/components/kpi_cards.html' %}
+
+<div class="row">
+    <!-- Left Column: Charts and Company Info -->
+    <div class="col-lg-6">
+        {% include 'trading_app/components/charts.html' %}
+    </div>
+
+    <!-- Right Column: Technical Indicators -->
+    <div class="col-lg-6">
+        {% include 'trading_app/components/technical_indicators.html' %}
+    </div>
+</div>
+
+<script>
+    // Update dashboard data when ticker changes
+    if (window.dashboardData) {
+        window.dashboardData.selectedTicker = '{{ selected_ticker }}';
+    }
+
+    // Reload all charts with new ticker data
+    if (typeof loadAllCharts === 'function') {
+        loadAllCharts('{{ selected_ticker }}');
+    }
+</script>

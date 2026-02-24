@@ -1,0 +1,121 @@
+{% extends 'trading_app/base.html' %}
+{% load static %}
+
+{% block title %} {{ portfolio_name }} {% endblock %}
+
+<script>
+    // Store selected ticker and investment for chart updates
+    window.dashboardData = {
+        selectedTicker: '{{ selected_ticker }}',
+        proposedInvestment: {{ proposed_investment }}
+    };
+</script>
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 sidebar-wrapper" id="sidebar-wrapper">
+            {% include 'trading_app/components/sidebar.html' %}
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10 main-content" id="main-content">
+            <!-- Header -->
+            <div class="dashboard-header">
+                <h1 class="mb-1">{{ portfolio_config.emoji }} {{ portfolio_name }} Forecast Dashboard</h1>
+                <p class="text-muted mb-0">
+                    <strong>Region:</strong> {{ portfolio_config.region }} |
+                    <strong>Currency:</strong> {{ portfolio_currency }} |
+                    <strong>Last Updated:</strong> <span id="last-updated">{{ last_updated }}</span>
+                </p>
+            </div>
+            
+            <!-- KPI Cards -->
+            {% comment %}
+            {% include 'trading_app/components/kpi_cards.html' %}
+            {% endcomment %}
+            
+            <!-- Top Gainers Table -->
+            {% comment %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Top Gainers Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Ticker</th>
+                                    <th>Avg Forecast</th>
+                                    <th>MSE</th>
+                                    <th>Current Price</th>
+                                    <th>Gain/Share</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for ticker in top_n %}
+                                <tr class="{% if ticker.ticker == selected_ticker %}table-active{% endif %}">
+                                    <td><strong>{{ ticker.ticker }}</strong></td>
+                                    <td>${{ ticker.avg_n_days_forecast|floatformat:2 }}</td>
+                                    <td>{{ ticker.mse|floatformat:4 }}</td>
+                                    <td>${{ ticker.current_price|floatformat:2 }}</td>
+                                    <td class="{% if ticker.gain_per_share > 0 %}text-success{% else %}text-danger{% endif %}">
+                                        ${{ ticker.gain_per_share|floatformat:2 }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endcomment %}
+            
+            <!-- Two Column Layout for Charts and Indicators -->
+            <div id="ticker-details-container">
+                {% include 'trading_app/partials/ticker_details.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Progress Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Updating Data</h5>
+            </div>
+            <div class="modal-body text-center" id="update-modal-body">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p id="update-status-text">Fetching latest data...</p>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                         role="progressbar" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Load charts on initial page load
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Page loaded, loading charts...');
+        const selectedTicker = '{{ selected_ticker }}';
+        if (selectedTicker && typeof loadAllCharts === 'function') {
+            loadAllCharts(selectedTicker);
+        } else {
+            console.error('loadAllCharts function not found or no ticker selected');
+        }
+    });
+</script>
+{% endblock %}
+
